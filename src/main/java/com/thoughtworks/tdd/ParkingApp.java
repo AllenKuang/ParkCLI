@@ -1,79 +1,83 @@
 package com.thoughtworks.tdd;
 
 
+import com.thoughtworks.tdd.IO.Input;
+import com.thoughtworks.tdd.IO.View;
+
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Scanner;
 
 public class ParkingApp {
     static ParkingBoy parkingBoy=null;
     public static void main(String[] args) throws Exception {
          setParkingBoy();
-         start();
-    }
+         Request request=new Request();
+         View view =new View();
+         ParkingLotController parkingLotController=new ParkingLotController(parkingBoy,view);
 
-    public static void start() throws IOException{
-        String input=tip();
-        choose(input);
-    }
+         Router router=new Router(parkingLotController);
+         String currentPage = "main";
+         while(true){
+             view.showBeginView();
+             String tip=Input.input();
+             request.setCommond(tip);
 
-    public static String tip() throws IOException {
-        System.out.println("1. 停车\n" +
-                "2. 取车 \n" +
-                "请输入您要进行的操作：");
-        Scanner in= new Scanner(System.in);
-        String input=in.next();
-        return input;
+             //choose(tip);
+             //parkingLotController.choose(tip);
+             router.choosePage(currentPage,tip);
+         }
     }
 
     public static void choose(String input) throws IOException {
         if(input.equals("1")){
-            int remainSpace =0;
-            for(ParkingLot parkingLot:parkingBoy.getparkingLots()){
-                remainSpace+=parkingLot.getSize();
-            }
-            if(remainSpace==0){
-                System.out.println("车已停满，请晚点再来");
-                start();
-            }else {
-                System.out.println("请输入车牌号:");
-                Scanner in = new Scanner(System.in);
-                Car car = new Car();
-                car.setBrand(in.next());
-                Receipt receipt = parkingBoy.park(car);
-                System.out.println("停车成功，您的小票是：" + receipt.getId());
-                start();
-            }
+            park();
         }else if(input.equals("2")){
-            System.out.println("取车");
-            System.out.println("请输入小票号:");
-            Scanner in= new Scanner(System.in);
-            ArrayList<Receipt> receipts=new ArrayList<>();
-
-            for(ParkingLot parkingLot:parkingBoy.getparkingLots()){
-                receipts.addAll(parkingLot.getparkcars().keySet());
-                System.out.println(parkingLot.getparkcars().keySet());
-            }
-            Receipt whichReceipt=null;
-            for(Receipt receipt:receipts){
-                if(in.next().equals(receipt.getId())){
-                    whichReceipt=receipt;
-                    break;
-                }
-            }
-            if(whichReceipt==null){
-                System.out.println("非法小票，无法取出车，请查证后再输入");
-                start();
-            }else {
-                Car car = parkingBoy.unPark(whichReceipt);
-                System.out.println("车已取出，您的车牌号是: " + car.getBrand());
-                //System.out.println(car.getBrand());
-                start();
-            }
+            unpark();
         }else{
-            System.out.println("非法指令，请查证后重新输入");
-            start();
+            View.showIllegalInstructionView();
+        }
+    }
+
+
+    public static void unpark() throws IOException {
+        View.showEnterReceiptIdView();
+        Scanner in= new Scanner(System.in);
+        ArrayList<Receipt> receipts=new ArrayList<>();
+
+        for(ParkingLot parkingLot:parkingBoy.getparkingLots()){
+            receipts.addAll(parkingLot.getparkcars().keySet());
+        }
+        String receipid=in.next();
+        Receipt whichReceipt=null;
+        for(Receipt receipt:receipts){
+            if(receipid.equals(receipt.getId())){
+                whichReceipt=receipt;
+                break;
+            }
+        }
+        if(whichReceipt==null){
+            View.showIllegalReceiptIdView();
+        }else {
+            Car car = parkingBoy.unPark(whichReceipt);
+            View.showBrandView(car.getBrand());
+        }
+    }
+
+    public static void park() throws IOException {
+        int remainSpace =0;
+        for(ParkingLot parkingLot:parkingBoy.getparkingLots()){
+            remainSpace+=parkingLot.getSize();
+        }
+        if(remainSpace==0){
+            View.showisFullView();
+        }else {
+            View.showEnterBrandView();
+            Scanner in = new Scanner(System.in);
+            Car car = new Car();
+            car.setBrand(in.next());
+            Receipt receipt = parkingBoy.park(car);
+            View.showReceiptIdView(receipt.getId());
         }
     }
 
