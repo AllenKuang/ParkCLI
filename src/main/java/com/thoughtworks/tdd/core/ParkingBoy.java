@@ -1,4 +1,4 @@
-package com.thoughtworks.tdd;
+package com.thoughtworks.tdd.core;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,7 +9,7 @@ public class ParkingBoy {
     private HashMap<String,String> record;
 
 
-    ParkingBoy(ArrayList<ParkingLot> parkingLots) {
+    public ParkingBoy(ArrayList<ParkingLot> parkingLots) {
         this.parkingLots = parkingLots;
     }
     public ParkingLot findFirstNotNullparkingLot(){

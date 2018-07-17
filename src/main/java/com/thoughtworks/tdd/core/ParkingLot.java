@@ -1,6 +1,5 @@
-package com.thoughtworks.tdd;
+package com.thoughtworks.tdd.core;
 
-import java.util.BitSet;
 import java.util.HashMap;
 
 public class ParkingLot {

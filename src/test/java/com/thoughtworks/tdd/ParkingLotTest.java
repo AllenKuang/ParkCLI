@@ -1,5 +1,9 @@
 package com.thoughtworks.tdd;
 
+import com.thoughtworks.tdd.core.Car;
+import com.thoughtworks.tdd.core.ParkingLot;
+import com.thoughtworks.tdd.core.ParkingLotFullException;
+import com.thoughtworks.tdd.core.Receipt;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -15,7 +19,7 @@ public class ParkingLotTest {
         ParkingLot parkingLot = new ParkingLot(1);
 
         try {
-            parkingLot.park(new Car());
+            parkingLot.park(new Car.Car());
         } catch (ParkingLotFullException exception) {
             fail("should park successfully");
         }
@@ -25,7 +29,7 @@ public class ParkingLotTest {
     @Test
     public void should_park_successfully_given_parking_lot_is_not_full_do_not_use_exception() {
         ParkingLot parkingLot = new ParkingLot(1);
-        Car car =new Car();
+        Car.Car car =new Car.Car();
         Receipt receipt=parkingLot.park(car);
 
         //assertThat(parkingLot.getparkcars().containsKey(receipt)).is(true);
@@ -37,7 +41,7 @@ public class ParkingLotTest {
         ParkingLot parkingLot = new ParkingLot(0);
 
         try {
-            parkingLot.park(new Car());         //出错，抛出异常直接跳到catch
+            parkingLot.park(new Car.Car());         //出错，抛出异常直接跳到catch
             fail("should park successfully");   //不出错执行下一行，进入fail
         } catch (ParkingLotFullException exception) {
 
@@ -48,7 +52,7 @@ public class ParkingLotTest {
     public void should_park_failed_given_parking_lot_is__full_do_not_use_exception() {
         ParkingLot parkingLot = new ParkingLot(0);
 
-        Car car =new Car();
+        Car.Car car =new Car.Car();
 //        try {
 //            parkingLot.park(car);//抛出异常，导致程序无法继续运行
 //        }catch (ParkingLotFullException exception){
@@ -62,7 +66,7 @@ public class ParkingLotTest {
     public void should_get_specific_car_when_call_unPark_given_receipt_is_right(){
         ParkingLot parkingLot = new ParkingLot(1);
 
-        Car theCar = new Car();
+        Car.Car theCar = new Car.Car();
         Receipt receipt = parkingLot.park(theCar);
 
         assertThat(parkingLot.unPark(receipt), is(theCar));
@@ -73,7 +77,7 @@ public class ParkingLotTest {
     public void should_not_get_specific_car_when_call_unPark_given_receipt_is_wrong(){
         ParkingLot parkingLot = new ParkingLot(1);
 
-        Car theCar = new Car();
+        Car.Car theCar = new Car.Car();
         Receipt receipt = parkingLot.park(theCar);
 
         Receipt anotherReceipt = new Receipt();
@@ -100,7 +104,7 @@ public class ParkingLotTest {
     public void should_be_false_when_call_isFull_given_a_full_parking_lot_take_out_a_car(){
         ParkingLot parkingLot = new ParkingLot(1);
 
-        Car theCar = new Car();
+        Car.Car theCar = new Car.Car();
         Receipt receipt = parkingLot.park(theCar);
         parkingLot.unPark(receipt);
 
@@ -111,12 +115,12 @@ public class ParkingLotTest {
     public void should_park_successfullly_when_call_park_again_given_a_full_parking_lot_take_out_a_car(){
         ParkingLot parkingLot = new ParkingLot(1);
 
-        Car theCar = new Car();
+        Car.Car theCar = new Car.Car();
         Receipt receipt = parkingLot.park(theCar);
         parkingLot.unPark(receipt);
 
         try {
-            parkingLot.park(new Car());
+            parkingLot.park(new Car.Car());
         } catch (ParkingLotFullException exception) {
             fail("should park successfully");
         }

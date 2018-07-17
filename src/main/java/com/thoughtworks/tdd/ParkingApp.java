@@ -3,81 +3,43 @@ package com.thoughtworks.tdd;
 
 import com.thoughtworks.tdd.IO.Input;
 import com.thoughtworks.tdd.IO.View;
+import com.thoughtworks.tdd.core.ParkingBoy;
+import com.thoughtworks.tdd.core.ParkingLot;
+import com.thoughtworks.tdd.shell.Router;
+import com.thoughtworks.tdd.shell.io.Request;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class ParkingApp {
     static ParkingBoy parkingBoy=null;
     public static void main(String[] args) throws Exception {
-         setParkingBoy();
-         Request request=new Request();
-         View view =new View();
-         ParkingLotController parkingLotController=new ParkingLotController(parkingBoy,view);
-
-         Router router=new Router(parkingLotController);
-         String currentPage = "main";
-         while(true){
-             view.showBeginView();
-             String tip=Input.input();
-             request.setCommond(tip);
-
-             //choose(tip);
-             //parkingLotController.choose(tip);
-             router.choosePage(currentPage,tip);
-         }
-    }
-
-    public static void choose(String input) throws IOException {
-        if(input.equals("1")){
-            park();
-        }else if(input.equals("2")){
-            unpark();
-        }else{
-            View.showIllegalInstructionView();
+        setParkingBoy();
+        View view =new View();
+        ParkingLotController parkingLotController=new ParkingLotController(parkingBoy,view);
+        Input input=new Input();
+        Request request=new Request();
+        Router router=new Router(parkingLotController);
+        String currentPage = "main";
+        while(true){
+            String command=input.input();
+            request.setCommond(command);
+            currentPage=router.choosePage(currentPage,request);
         }
     }
 
-
-    public static void unpark() throws IOException {
-        View.showEnterReceiptIdView();
-        Scanner in= new Scanner(System.in);
-        ArrayList<Receipt> receipts=new ArrayList<>();
-
-        for(ParkingLot parkingLot:parkingBoy.getparkingLots()){
-            receipts.addAll(parkingLot.getparkcars().keySet());
-        }
-        String receipid=in.next();
-        Receipt whichReceipt=null;
-        for(Receipt receipt:receipts){
-            if(receipid.equals(receipt.getId())){
-                whichReceipt=receipt;
-                break;
-            }
-        }
-        if(whichReceipt==null){
-            View.showIllegalReceiptIdView();
-        }else {
-            Car car = parkingBoy.unPark(whichReceipt);
-            View.showBrandView(car.getBrand());
-        }
-    }
-
-    public static void park() throws IOException {
-        int remainSpace =0;
-        for(ParkingLot parkingLot:parkingBoy.getparkingLots()){
-            remainSpace+=parkingLot.getSize();
-        }
-        if(remainSpace==0){
-            View.showisFullView();
-        }else {
-            View.showEnterBrandView();
-            Scanner in = new Scanner(System.in);
-            Car car = new Car();
-            car.setBrand(in.next());
-            Receipt receipt = parkingBoy.park(car);
-            View.showReceiptIdView(receipt.getId());
+    public static void call(ParkingLotManageController parkingLotManageController) throws IOException{
+        setParkingBoy();
+        View view =new View();
+        ParkingLotController parkingLotController=new ParkingLotController(parkingBoy,view);
+        Input input=new Input();
+        Request request=new Request();
+        Router router=new Router(parkingLotController);
+        String currentPage = "main";
+        while(true){
+            String command=input.input();
+            request.setCommond(command);
+            currentPage=router.choosePage(currentPage,request,parkingLotManageController);
         }
     }
 

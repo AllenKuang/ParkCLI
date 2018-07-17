@@ -1,6 +1,7 @@
 package com.thoughtworks.tdd;
 
 
+import com.thoughtworks.tdd.core.*;
 import org.junit.jupiter.api.Test;
 
 
@@ -30,7 +31,7 @@ public class ParkingBoyTest {
 
         ParkingBoy parkingBoy =new ParkingBoy(parkingLots);
 
-        Car car =new Car();
+        Car.Car car =new Car.Car();
         try {
             parkingBoy.park(car);
             verify(parkingLot1).park(car);
@@ -51,7 +52,7 @@ public class ParkingBoyTest {
 
         ParkingBoy parkingBoy =new ParkingBoy(parkingLots);
 
-        Car car =new Car();
+        Car.Car car =new Car.Car();
         Receipt receipt =parkingBoy.park(car);
         ParkingLot lotParkMyCar=parkingBoy.getparkingLots().get(0);
 
@@ -74,7 +75,7 @@ public class ParkingBoyTest {
 
         ParkingBoy parkingBoy =new ParkingBoy(parkingLots);
 
-        Car car =new Car();
+        Car.Car car =new Car.Car();
 
         try {
             parkingBoy.park(car);
@@ -99,7 +100,7 @@ public class ParkingBoyTest {
         parkingLots.add(parkingLot1);
 
         ParkingBoy parkingBoy =new ParkingBoy(parkingLots);
-        Car theCar = new Car();
+        Car.Car theCar = new Car.Car();
 
 //        when(parkingLot1.park(theCar)).thenReturn(parkingBoy.park(theCar));
 
@@ -116,7 +117,7 @@ public class ParkingBoyTest {
         parkingLots.add(parkingLot1);
 
         ParkingBoy parkingBoy =new ParkingBoy(parkingLots);
-        Car theCar = new Car();
+        Car.Car theCar = new Car.Car();
 
         parkingBoy.park(theCar);
 
@@ -134,8 +135,8 @@ public class ParkingBoyTest {
         parkingLots.add(parkingLot2);
 
         ParkingBoy parkingBoy =new ParkingBoy(parkingLots);
-        Car firstCar = new Car();
-        Car secondCar = new Car();
+        Car.Car firstCar = new Car.Car();
+        Car.Car secondCar = new Car.Car();
         Receipt receipt1=parkingBoy.park(firstCar);
         Receipt receipt2=parkingBoy.park(secondCar);
         //parkingBoy.unPark(receipt1);
