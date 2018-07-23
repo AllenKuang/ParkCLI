@@ -15,7 +15,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        String initRootPath = "main";
+        String initRootPath = "root";
         Request request = new Request();
         Router router = initRouter(initRootPath, request);
         router.launch();
@@ -27,6 +27,7 @@ public class Main {
                 router.processRequest(request);
             }
         } catch (Exception ex) {
+            ex.printStackTrace();
             System.out.println("\n App Exist, cause from route not exist!");
         } finally {
             cliInput.close();
@@ -34,7 +35,7 @@ public class Main {
     }
 
     private static Router initRouter(String currentPage, Request request) {
-        ParkingBoy boy = new ParkingBoy(new ParkingLot(2), new ParkingLot(2));
+        ParkingBoy boy = new ParkingBoy(new ParkingLot("001","西南停车场",20,8), new ParkingLot("002","西南停车场",4,8));
         Response response = new Response();
 
         Router router = new Router(currentPage);
@@ -44,6 +45,14 @@ public class Main {
         router.registerRoute("main/1/*", new ParkingController(request, response, boy));
         router.registerRoute("main/2/*", new PickUpController(request, response, boy));
 
+        //router.registerRoute("main/*", new RootController(request, response, boy));
+        router.registerRoute("root", new RootController(request, response, boy));
+
+        router.registerRoute("manage", new ManageParkLotController(request, response, boy));
+        router.registerRoute("manage/1", new GotoCheckParkLotController(request, response, boy));
+        router.registerRoute("manage/2", new GotoAddParkLotController(request, response, boy));
+        //router.registerRoute("manage/1/*", new CheckParkLotController(request, response, boy));
+        router.registerRoute("manage/2/*", new AddParkLotController(request, response, boy));
         return router;
     }
 

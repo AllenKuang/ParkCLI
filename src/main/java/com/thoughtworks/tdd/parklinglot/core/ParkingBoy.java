@@ -1,5 +1,6 @@
 package com.thoughtworks.tdd.parklinglot.core;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -8,7 +9,7 @@ public class ParkingBoy  {
     protected List<ParkingLot> parkingLots;
 
     public ParkingBoy(ParkingLot... parkingLots) {
-        this.parkingLots = Arrays.asList(parkingLots);
+        this.parkingLots = new ArrayList<ParkingLot>(Arrays.asList(parkingLots));
     }
 
     public Receipt park(Car car) throws ParkingLotFullException {
@@ -40,5 +41,11 @@ public class ParkingBoy  {
         return currentParkingLot.unPark(parkingTicket);
     }
 
+    public List<ParkingLot> getParkingLots(){
+        return this.parkingLots;
+    }
 
+    public void  addParkingLot(ParkingLot parkingLot){
+        this.parkingLots.add(parkingLot);
+    }
 }

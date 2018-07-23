@@ -29,6 +29,7 @@ public class ParkingController implements BaseController {
 
         response.send("停车成功，您的小票是：\n" +
                 receipt.toString());
-        return "forward:main";
+        //return "forward:main";
+        return "root";
     }
 }

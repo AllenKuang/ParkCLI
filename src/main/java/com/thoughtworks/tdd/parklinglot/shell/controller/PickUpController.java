@@ -30,14 +30,17 @@ public class PickUpController implements BaseController {
 
             if (car == null) {
                 response.send("非法小票，无法取出车，请查证后再输");
+                return "root";
             } else {
                 response.send("车已取出，您的车牌号是: " + car.getCardNum());
+                return "root";
             }
 
         } catch (IllegalArgumentException ex) {
             response.send("非法Recipt ID，无法取出车，请查证后再输");
         } finally {
-            return "forward:main";
+            //return "forward:main";
+            return "root";
         }
 
     }

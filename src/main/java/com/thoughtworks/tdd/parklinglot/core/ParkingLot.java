@@ -4,13 +4,21 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ParkingLot {
+    private String id;
+    private String name;
     private int size;
+    private int stoppedCar;
     private Map<Receipt, Car> parkedCars = new HashMap<>();
 
     public ParkingLot(int size) {
         this.size = size;
     }
-
+    public ParkingLot(String id, String name, int size, int stoppedCar) {
+        this.id = id;
+        this.name = name;
+        this.size = size;
+        this.stoppedCar = stoppedCar;
+    }
     public Receipt park(Car car) {
         if (parkedCars.size() == this.size) {
             throw new ParkingLotFullException();
@@ -32,5 +40,21 @@ public class ParkingLot {
 
     public boolean isFull() {
         return this.parkedCars.size() == size;
+    }
+
+    public int getSize() {
+        return this.size;
+    }
+
+    public int getstoppedCar() {
+        return this.stoppedCar;
+    }
+
+    public String getId() {
+        return this.id;
+    }
+
+    public String getName() {
+        return this.name;
     }
 }

@@ -29,18 +29,38 @@ public class Router {
     public void processRequest(Request request) {
 
         String routePath = buildLocateRoutePath(request);
-        String forwardRouteRule = routeMaps.get(routePath).process();
-        currentPath = routePath;
-        if (forwardRouteRule != null && forwardRouteRule.contains("forward:")) {
-            currentPath = buildForwardRoutePath(forwardRouteRule);
+        if(routePath.contains("root/1")){
+            routePath="main";
         }
+        if(routePath.contains("root/2")){
+            routePath="manage";
+        }
+//        if(routePath.contains("*")){
+//            routePath="root";
+//        }
+        //String forwardRouteRule = routeMaps.get(routePath).process();
+        String rootRouteRule = routeMaps.get(routePath).process();
+        currentPath = routePath;
+
+        if (rootRouteRule != null && rootRouteRule.contains("root")) {
+            currentPath = buildForwardRoutePath(rootRouteRule);
+        }
+//        if (forwardRouteRule != null && forwardRouteRule.contains("forward:")) {
+//            currentPath = buildForwardRoutePath(forwardRouteRule);
+//        }
+    }
+    private String buildForwardRoutePath(String rootRouteRule) {
+        //String rootRoute = rootRouteRule.split(":")[1];
+        routeMaps.get(rootRouteRule).process();
+        return rootRouteRule;
     }
 
-    private String buildForwardRoutePath(String forwardRouteRule) {
-        String forwardRoute = forwardRouteRule.split(":")[1];
-        routeMaps.get(forwardRoute).process();
-        return forwardRoute;
-    }
+
+//    private String buildForwardRoutePath(String forwardRouteRule) {
+//        String forwardRoute = forwardRouteRule.split(":")[1];
+//        routeMaps.get(forwardRoute).process();
+//        return forwardRoute;
+//    }
 
     private String buildLocateRoutePath(Request request) {
 
